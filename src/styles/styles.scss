@@ -1,0 +1,69 @@
+@import "~bootstrap/scss/bootstrap";
+
+
+@font-face {
+    font-family: "UNBEGS";
+    font-style: "Regular";
+    src: url("./fonts/UNBEGS.otf");
+}
+
+@font-face {
+    font-family: "SF Pro";
+    font-style: "Regular";
+    src: url("./fonts/SF-Pro-Display-Regular.otf");
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+.App {
+    width: 100vw;
+    
+    .navbar {
+        background-color: #f7f7f7;
+        padding: 1rem;
+        margin: 1rem;
+        -moz-border-radius: 0.5em;
+        -webkit-border-radius: 0.5em;
+        border-radius: 0.5em;
+    }
+
+    #blurBackground {
+        background-color: rgba(143, 143, 143, 0.3);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+
+    .patternDiv {
+        background-color: #f7f5e6;
+        opacity: 1;
+        background-image: radial-gradient(circle at center center, #f7f5e6, #f7f5e6), repeating-radial-gradient(circle at center center, #8cc1db, #f7f5e6, 350px, transparent 250px, transparent 100px);
+        background-blend-mode: multiply;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        animation: ripple 60s infinite;
+        z-index: -1;
+    }
+    
+    @keyframes ripple {
+        0% {
+            transform: scale(150%);
+        }
+
+        50% {
+            transform: scale(100%);
+        }
+
+        100% {
+            transform: scale(150%);
+        }
+    }
+}
