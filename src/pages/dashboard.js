@@ -1,9 +1,10 @@
 import React, { useState, useEffect, Component } from "react";
-import { useNavigate, Link, useMatch } from 'react-router-dom'
+import { useNavigate, useParams, useMatch } from 'react-router-dom'
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 
-export default function Profile() {
+export default function Dashboard() {
+    const params = useParams();
     const navigate = useNavigate()
     const localizer = momentLocalizer(moment)
 

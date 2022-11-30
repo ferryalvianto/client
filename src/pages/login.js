@@ -42,15 +42,33 @@ export default function Login() {
         setPassword(e.target.value)
     }
 
-    function handleSignup(e) {
-        navigate("/profile");
-        window.location.reload();
-    }
+    // function handleSignup(e) {
+    //     navigate("/profile");
+    //     window.location.reload();
+    // }
 
     function handleLogin(e) {
         e.preventDefault();
 
-        navigate("/profile");
+        const form = e.target
+        const user = {
+            username: form[0].value,
+            password: form[1].value
+        }
+
+        fetch('/login', {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                localStorage.setItem('token', data.token)
+            })
+
+        navigate(`/dashboard/{form[0].value}`);
         window.location.reload();
 
         // AuthService.login(username, password).then(
@@ -64,6 +82,44 @@ export default function Login() {
         // );
     }
 
+    async function handleSignup(e) {
+        e.preventDefault()
+
+        const form = e.target
+        const user = {
+            businessID: form[0].value,
+            username: form[4].value,
+            password: form[6].value,
+            email: form[1].value,
+            firstname: form[2].value,
+            lastname: form[3].value
+        }
+
+        try {
+            const res = await fetch("/register", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(user)
+            })
+            const data = await res.json()
+            console.log(data)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
+        fetch('/getUsername', {
+            headers: {
+                "x-access-token": localStorage.getItem('token')
+            }
+        })
+            .then(res => res.json())
+            .then(data => data.isLogged ? navigate(`/dashboard/${data.username}`) : null)
+    }, [])
+
     return (
         <>
             <div style={{ width: '100vw', height: '50vh', top: '25vh', position: 'fixed', padding: '5rem' }} className={`d-flex align-items-center`}>
@@ -71,7 +127,7 @@ export default function Login() {
 
                     {isRegister ? (
                         <>
-                            <form className="row g-3 containerblur" style={{ alignContent: 'center', padding: '2rem', justifyContent: 'center' }} onSubmit={handleLogin} id='blurBackground'>
+                            <form className="row g-3 containerblur" style={{ alignContent: 'center', padding: '2rem', justifyContent: 'center' }} onSubmit={(e) => handleSignup(e)} id='blurBackground'>
                                 <h6 id='alertInput' style={{ display: 'none', color: 'red', paddingTop: '0' }}>Please enter your username and password.</h6>
                                 <div className="col-11">
                                     <label htmlFor="username" className="form-label text-start" style={{}}>Business ID</label>
@@ -174,7 +230,7 @@ export default function Login() {
 
                     ) : (
                         <>
-                            <form className="row g-3 containerblur" style={{ alignContent: 'center', padding: '2rem', justifyContent: 'center' }} onSubmit={handleLogin} id='blurBackground'>
+                            <form className="row g-3 containerblur" style={{ alignContent: 'center', padding: '2rem', justifyContent: 'center' }} onSubmit={(e) => handleLogin(e)} id='blurBackground'>
                                 <h6 id='alertInput' style={{ display: 'none', color: 'red', paddingTop: '0' }}>Please enter your username and password.</h6>
                                 <div className="col-11">
                                     <label htmlFor="username" className="form-label text-start" style={{}}>Business ID</label>
